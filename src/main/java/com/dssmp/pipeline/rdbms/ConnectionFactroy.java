@@ -1,10 +1,8 @@
-package com.dssmp.pipeline.rdbms.impl;
+package com.dssmp.pipeline.rdbms;
 
-import com.dssmp.pipeline.rdbms.ConnectionFactroy;
-import com.dssmp.pipeline.rdbms.SQLUtil;
+import com.dssmp.pipeline.config.PipelineConfiguration;
 
-import java.sql.ResultSet;
-import java.util.List;
+import java.sql.Connection;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,19 +21,24 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class MsSqlUtil extends SQLUtil {
-    
-    public MsSqlUtil(ConnectionFactroy connectionFactroy) {
-        super(connectionFactroy);
+public abstract class ConnectionFactroy {
+
+    private PipelineConfiguration pipelineConfiguration;
+
+
+    public ConnectionFactroy(PipelineConfiguration pipelineConfiguration) {
+        this.pipelineConfiguration = pipelineConfiguration;
     }
 
-    @Override
-    public ResultSet getData(String sql) {
-        return null;
-    }
+    /**
+     * 获取链接
+     *
+     * @return
+     */
+    public abstract Connection getConnection();
 
-    @Override
-    public void insertData(List<String> sqls) {
-
-    }
+    /**
+     * 初始化链接池
+     */
+    public abstract void init();
 }

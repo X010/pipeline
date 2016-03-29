@@ -20,7 +20,13 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface SQLUtil {
+public abstract class SQLUtil {
+
+    private ConnectionFactroy connectionFactroy;
+
+    public SQLUtil(ConnectionFactroy connectionFactroy) {
+        this.connectionFactroy = connectionFactroy;
+    }
 
     /**
      * 通过SQL获取游标
@@ -28,12 +34,12 @@ public interface SQLUtil {
      * @param sql
      * @return
      */
-    public ResultSet getData(String sql);
+    public abstract ResultSet getData(String sql);
 
     /**
      * 导入数据
      *
      * @param sqls
      */
-    public void insertData(List<String> sqls);
+    public abstract void insertData(List<String> sqls);
 }

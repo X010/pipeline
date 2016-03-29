@@ -1,5 +1,6 @@
 package com.dssmp.pipeline.rdbms.impl;
 
+import com.dssmp.pipeline.rdbms.ConnectionFactroy;
 import com.dssmp.pipeline.rdbms.SQLUtil;
 
 import java.sql.ResultSet;
@@ -22,7 +23,12 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class MySqlUtil implements SQLUtil {
+public class MySqlUtil extends SQLUtil {
+
+
+    public MySqlUtil(ConnectionFactroy connectionFactroy) {
+        super(connectionFactroy);
+    }
 
     @Override
     public ResultSet getData(String sql) {
