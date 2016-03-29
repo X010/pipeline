@@ -1,0 +1,18 @@
+{
+  "exportconnection": "",
+  "importconnection": "",
+  "exportdb": "",
+  "importdb": "",
+  "exportdbtype": "",
+  "importdbtype": "",
+  "exportsql": "",
+  "importsql": "",
+  "mapping": [
+    {
+      "export": "id",
+      "exporttype": "INT",
+      "import": "id",
+      "importtype": "INT"
+    }
+  ]
+}

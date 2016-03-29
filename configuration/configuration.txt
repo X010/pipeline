@@ -1,0 +1,18 @@
+{
+  "exportconnection": "导出数据链接",
+  "importconnection": "导入数据链接",
+  "exportdb": "导出数据名称",
+  "importdb": "导入数据名称",
+  "exportdbtype": "导出数据类型",
+  "importdbtype": "导入数据类型",
+  "exportsql": "导出数据库SQL",
+  "importsql": "导入数据库SQL",
+  "mapping": [
+    {
+      "export": "导出字段",
+      "exporttype": "导出字段类型",
+      "import": "导入字段",
+      "importtype": "导入字段类型"
+    }
+  ]
+}
