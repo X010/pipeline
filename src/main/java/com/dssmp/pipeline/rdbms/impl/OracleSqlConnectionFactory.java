@@ -24,8 +24,13 @@ import java.sql.Connection;
  */
 public class OracleSqlConnectionFactory extends ConnectionFactroy {
 
+
     public OracleSqlConnectionFactory(PipelineConfiguration pipelineConfiguration) {
         super(pipelineConfiguration);
+    }
+
+    public OracleSqlConnectionFactory(String url, String username, String password) {
+        super(url, username, password);
     }
 
     @Override

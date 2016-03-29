@@ -1,6 +1,10 @@
 {
   "exportconnection": "",
   "importconnection": "",
+  "exportusername": "",
+  "exportpassword": "",
+  "importusername": "",
+  "importpassword": "",
   "exportdb": "",
   "importdb": "",
   "exportdbtype": "",

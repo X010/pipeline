@@ -29,6 +29,10 @@ public class MySqlConnectionFactory extends ConnectionFactroy {
         super(pipelineConfiguration);
     }
 
+    public MySqlConnectionFactory(String url, String username, String password) {
+        super(url, username, password);
+    }
+
     @Override
     public Connection getConnection() {
         return null;

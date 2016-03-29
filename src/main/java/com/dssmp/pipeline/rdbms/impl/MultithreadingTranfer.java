@@ -1,8 +1,8 @@
-package com.dssmp.pipeline.rdbms;
+package com.dssmp.pipeline.rdbms.impl;
 
 import com.dssmp.pipeline.config.PipelineConfiguration;
-
-import java.sql.Connection;
+import com.dssmp.pipeline.rdbms.ConnectionFactroy;
+import com.dssmp.pipeline.rdbms.Transfer;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,34 +21,14 @@ import java.sql.Connection;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public abstract class ConnectionFactroy {
+public class MultithreadingTranfer extends Transfer {
 
-    private PipelineConfiguration pipelineConfiguration;
-
-    private String url;
-    private String username;
-    private String password;
-
-    public ConnectionFactroy(PipelineConfiguration pipelineConfiguration) {
-        this.pipelineConfiguration = pipelineConfiguration;
+    public MultithreadingTranfer(PipelineConfiguration pipelineConfiguration, ConnectionFactroy exportConnectionFactory, ConnectionFactroy importConnectionFactory) {
+        super(pipelineConfiguration, exportConnectionFactory, importConnectionFactory);
     }
 
+    @Override
+    public void tranfer() {
 
-    public ConnectionFactroy(String url, String username, String password) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
     }
-
-    /**
-     * 获取链接
-     *
-     * @return
-     */
-    public abstract Connection getConnection();
-
-    /**
-     * 初始化链接池
-     */
-    public abstract void init();
 }

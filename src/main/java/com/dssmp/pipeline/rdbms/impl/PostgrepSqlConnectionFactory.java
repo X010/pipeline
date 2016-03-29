@@ -24,8 +24,13 @@ import java.sql.Connection;
  */
 public class PostgrepSqlConnectionFactory extends ConnectionFactroy {
 
+
     public PostgrepSqlConnectionFactory(PipelineConfiguration pipelineConfiguration) {
         super(pipelineConfiguration);
+    }
+
+    public PostgrepSqlConnectionFactory(String url, String username, String password) {
+        super(url, username, password);
     }
 
     @Override

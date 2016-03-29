@@ -4,6 +4,10 @@ import com.dssmp.pipeline.config.Configuration;
 import com.dssmp.pipeline.config.ConfigurationException;
 import com.dssmp.pipeline.config.PipelineConfiguration;
 import com.dssmp.pipeline.config.PipelineOptions;
+import com.dssmp.pipeline.rdbms.ConnectionFactroy;
+import com.dssmp.pipeline.rdbms.Transfer;
+import com.dssmp.pipeline.rdbms.impl.*;
+import com.dssmp.pipeline.util.CONST;
 import com.google.common.base.Strings;
 
 import java.nio.file.Path;
@@ -25,15 +29,59 @@ public class Application {
         String configFile = opts.getConfigFile();
         if (!Strings.isNullOrEmpty(configFile)) {
             //初始导入导出链接池
-            Paths.get(opts.getConfigFile());
+            PipelineConfiguration config = tryReadConfigurationFile(Paths.get(opts.getConfigFile()));
+            if (config != null) {
+                ConnectionFactroy exportConnectionFactory = getConnectionFactory(config.getExceptionDbType()
+                        , config.getExceptionConnection()
+                        , config.getExceptionUserName()
+                        , config.getExceptionPassword());
+                ConnectionFactroy importConnectionFactory = getConnectionFactory(config.getImportDbType()
+                        , config.getImportConnection()
+                        , config.getImportUserName()
+                        , config.getImportPassword());
 
+                if (exportConnectionFactory == null || importConnectionFactory == null) {
+                    throw new Exception("no create export connection factory or no create import connection factory");
+                }
+
+                Transfer transfer = new MultithreadingTranfer(config, exportConnectionFactory, importConnectionFactory);
+                transfer.tranfer();
+            }
         } else {
             throw new Exception("No Found ConfigFile");
         }
-
-
     }
 
+    /**
+     * 获取链接工厂
+     *
+     * @param dbType
+     * @param url
+     * @param username
+     * @param password
+     * @return
+     */
+    private static ConnectionFactroy getConnectionFactory(String dbType, String url, String username, String password) {
+        ConnectionFactroy connectionFactroy = null;
+        switch (dbType) {
+            case CONST.MSSQL:
+                connectionFactroy = new MsSqlConnectionFactory(url, username, password);
+                break;
+
+            case CONST.MYSQL:
+                connectionFactroy = new MySqlConnectionFactory(url, username, password);
+                break;
+
+            case CONST.ORACLE:
+                connectionFactroy = new OracleSqlConnectionFactory(url, username, password);
+                break;
+
+            case CONST.POSTGREPSQL:
+                connectionFactroy = new PostgrepSqlConnectionFactory(url, username, password);
+                break;
+        }
+        return connectionFactroy;
+    }
 
     private static PipelineConfiguration tryReadConfigurationFile(Path configFile) {
         try {
@@ -42,7 +90,6 @@ public class Application {
             return null;
         }
     }
-
 
     private static PipelineConfiguration readConfigurationFile(Path configFile) throws ConfigurationException {
         try {

@@ -34,6 +34,28 @@ public class PipelineConfiguration extends Configuration {
     private final static String EXCEPTIONSQL = "exportsql";
     private final static String IMPORTSQL = "importsql";
     private final static String MAPPING = "mapping";
+    private final static String EXCEPTIONUSERNAME = "exportusername";
+    private final static String EXCEPTIONPASSWORD = "exportpassword";
+    private final static String IMPORTUSERNAME = "importusername";
+    private final static String IMPORTPASSWORD = "importpassword";
+
+    public String getExceptionUserName() {
+        return readString(EXCEPTIONUSERNAME);
+    }
+
+    public String getExceptionPassword() {
+        return readString(EXCEPTIONPASSWORD);
+    }
+
+
+    public String getImportUserName() {
+        return readString(IMPORTUSERNAME);
+    }
+
+
+    public String getImportPassword() {
+        return readString(IMPORTPASSWORD);
+    }
 
     /**
      * 导出链接

@@ -24,8 +24,13 @@ import java.sql.Connection;
  */
 public class MsSqlConnectionFactory extends ConnectionFactroy {
 
+
     public MsSqlConnectionFactory(PipelineConfiguration pipelineConfiguration) {
         super(pipelineConfiguration);
+    }
+
+    public MsSqlConnectionFactory(String url, String username, String password) {
+        super(url, username, password);
     }
 
     @Override
