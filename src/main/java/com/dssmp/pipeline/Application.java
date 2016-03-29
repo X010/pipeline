@@ -24,6 +24,7 @@ public class Application {
      * @param args
      */
     public static void main(String[] args) throws Exception {
+
         //读取并解析配置
         PipelineOptions opts = PipelineOptions.parse(args);
         String configFile = opts.getConfigFile();
@@ -35,14 +36,17 @@ public class Application {
                         , config.getExceptionConnection()
                         , config.getExceptionUserName()
                         , config.getExceptionPassword());
+
                 ConnectionFactroy importConnectionFactory = getConnectionFactory(config.getImportDbType()
                         , config.getImportConnection()
                         , config.getImportUserName()
                         , config.getImportPassword());
-
                 if (exportConnectionFactory == null || importConnectionFactory == null) {
                     throw new Exception("no create export connection factory or no create import connection factory");
                 }
+                exportConnectionFactory.init();
+                importConnectionFactory.init();
+
 
                 Transfer transfer = new MultithreadingTranfer(config, exportConnectionFactory, importConnectionFactory);
                 transfer.tranfer();
