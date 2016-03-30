@@ -3,6 +3,7 @@ package com.dssmp.pipeline.rdbms;
 import com.dssmp.pipeline.config.PipelineConfiguration;
 
 import java.sql.Connection;
+import java.util.Properties;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -25,9 +26,11 @@ public abstract class ConnectionFactroy {
 
     private PipelineConfiguration pipelineConfiguration;
 
-    private String url;
-    private String username;
-    private String password;
+    protected String url;
+    protected String username;
+    protected String password;
+
+
 
     public ConnectionFactroy(PipelineConfiguration pipelineConfiguration) {
         this.pipelineConfiguration = pipelineConfiguration;
@@ -45,10 +48,33 @@ public abstract class ConnectionFactroy {
      *
      * @return
      */
-    public abstract Connection getConnection();
+    public abstract Connection getConnection() throws Exception;
 
     /**
      * 初始化链接池
      */
     public abstract void init();
+
+
+    /**
+     * 加载配置
+     *
+     * @return
+     */
+    protected  Properties loadProperty() {
+        Properties properties = new Properties();
+        properties.put("url", this.url);
+        properties.put("username", this.username);
+        properties.put("password", this.password);
+        properties.put("maxActive", 20);
+        properties.put("initialSize", 10);
+        properties.put("maxWait", 12000);
+        properties.put("minIdle", 5);
+        properties.put("timeBetweenEvictionRunsMillis", 6000);
+        properties.put("validationQuery", "SELECT now();");
+        properties.put("testWhileIdle", true);
+        properties.put("testOnBorrow", false);
+        properties.put("testOnReturn", false);
+        return properties;
+    }
 }

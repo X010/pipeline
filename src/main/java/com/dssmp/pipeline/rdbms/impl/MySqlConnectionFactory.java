@@ -1,9 +1,12 @@
 package com.dssmp.pipeline.rdbms.impl;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.dssmp.pipeline.config.PipelineConfiguration;
 import com.dssmp.pipeline.rdbms.ConnectionFactroy;
 
 import java.sql.Connection;
+import java.util.Properties;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,6 +27,7 @@ import java.sql.Connection;
  */
 public class MySqlConnectionFactory extends ConnectionFactroy {
 
+    private DruidDataSource dds = null;
 
     public MySqlConnectionFactory(PipelineConfiguration pipelineConfiguration) {
         super(pipelineConfiguration);
@@ -34,12 +38,22 @@ public class MySqlConnectionFactory extends ConnectionFactroy {
     }
 
     @Override
-    public Connection getConnection() {
-        return null;
+    public Connection getConnection() throws Exception {
+        if (dds == null) {
+            throw new Exception("No Found Connection Pooled");
+        }
+        return dds.getConnection();
     }
 
     @Override
     public void init() {
-
+        Properties properties = loadProperty();
+        try {
+            dds = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
 }
