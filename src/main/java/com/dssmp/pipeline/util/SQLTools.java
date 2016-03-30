@@ -1,9 +1,6 @@
-package com.dssmp.pipeline.rdbms;
+package com.dssmp.pipeline.util;
 
 import com.dssmp.pipeline.config.PipelineConfiguration;
-
-import java.sql.Connection;
-import java.util.Properties;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,39 +19,29 @@ import java.util.Properties;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public abstract class ConnectionFactroy {
+public class SQLTools {
 
-    private PipelineConfiguration pipelineConfiguration;
-
-    protected String url;
-    protected String username;
-    protected String password;
-
-
-
-    public ConnectionFactroy(PipelineConfiguration pipelineConfiguration) {
-        this.pipelineConfiguration = pipelineConfiguration;
-    }
-
-
-    public ConnectionFactroy(String url, String username, String password) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
-    }
+    private static final String PLACEHLODER = "#{PLACEHLODER}";
 
     /**
-     * 获取链接
+     * 获取统计SQL
      *
+     * @param sql
      * @return
      */
-    public abstract Connection getConnection() throws Exception;
+    public static String getCountSql(String sql) {
+        return sql.replace(PLACEHLODER, " count(1) as total ");
+    }
 
     /**
-     * 初始化链接池
+     * 获取读取数据SQL
+     *
+     * @param sql
+     * @param pipelineConfiguration
+     * @return
      */
-    public abstract void init();
-
-
+    public static String getSelectSql(String sql, PipelineConfiguration pipelineConfiguration) {
+        return null;
+    }
 
 }

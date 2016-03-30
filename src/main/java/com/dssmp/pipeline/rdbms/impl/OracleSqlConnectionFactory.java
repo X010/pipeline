@@ -1,9 +1,12 @@
 package com.dssmp.pipeline.rdbms.impl;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.dssmp.pipeline.config.PipelineConfiguration;
 import com.dssmp.pipeline.rdbms.ConnectionFactroy;
 
 import java.sql.Connection;
+import java.util.Properties;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,7 +26,7 @@ import java.sql.Connection;
  * limitations under the License.
  */
 public class OracleSqlConnectionFactory extends ConnectionFactroy {
-
+    private DruidDataSource dds = null;
 
     public OracleSqlConnectionFactory(PipelineConfiguration pipelineConfiguration) {
         super(pipelineConfiguration);
@@ -34,12 +37,43 @@ public class OracleSqlConnectionFactory extends ConnectionFactroy {
     }
 
     @Override
-    public Connection getConnection() {
-        return null;
+    public Connection getConnection() throws Exception {
+        if (dds == null) {
+            throw new Exception("No Found Connection Pooled");
+        }
+        return dds.getConnection();
     }
 
     @Override
     public void init() {
+        Properties properties = loadProperty();
+        try {
+            dds = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * 加载配置
+     *
+     * @return
+     */
+    protected  Properties loadProperty() {
+        Properties properties = new Properties();
+        properties.put("driverClassName","oracle.jdbc.OracleDriver");
+        properties.put("url", this.url);
+        properties.put("username", this.username);
+        properties.put("password", this.password);
+        properties.put("maxActive", 20);
+        properties.put("initialSize", 10);
+        properties.put("maxWait", 12000);
+        properties.put("minIdle", 5);
+        properties.put("timeBetweenEvictionRunsMillis", 6000);
+        properties.put("validationQuery", "SELECT now();");
+        properties.put("testWhileIdle", true);
+        properties.put("testOnBorrow", false);
+        properties.put("testOnReturn", false);
+        return properties;
     }
 }

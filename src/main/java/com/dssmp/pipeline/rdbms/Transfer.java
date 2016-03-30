@@ -20,9 +20,9 @@ import com.dssmp.pipeline.config.PipelineConfiguration;
  * limitations under the License.
  */
 public abstract class Transfer {
-    private PipelineConfiguration pipelineConfiguration;
-    private ConnectionFactroy exportConnectionFactory;
-    private ConnectionFactroy importConnectionFactory;
+    protected PipelineConfiguration pipelineConfiguration;
+    protected ConnectionFactroy exportConnectionFactory;
+    protected ConnectionFactroy importConnectionFactory;
 
 
     public Transfer(PipelineConfiguration pipelineConfiguration, ConnectionFactroy exportConnectionFactory, ConnectionFactroy importConnectionFactory) {
@@ -58,5 +58,5 @@ public abstract class Transfer {
     /**
      * 传输
      */
-    public abstract void tranfer();
+    public abstract void tranfer() throws Exception;
 }

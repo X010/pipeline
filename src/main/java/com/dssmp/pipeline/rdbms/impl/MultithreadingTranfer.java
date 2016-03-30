@@ -2,7 +2,12 @@ package com.dssmp.pipeline.rdbms.impl;
 
 import com.dssmp.pipeline.config.PipelineConfiguration;
 import com.dssmp.pipeline.rdbms.ConnectionFactroy;
+import com.dssmp.pipeline.rdbms.SQLUtil;
+import com.dssmp.pipeline.rdbms.SQLUtilFactory;
 import com.dssmp.pipeline.rdbms.Transfer;
+import com.dssmp.pipeline.util.SQLTools;
+
+import java.sql.ResultSet;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,7 +33,35 @@ public class MultithreadingTranfer extends Transfer {
     }
 
     @Override
-    public void tranfer() {
+    public void tranfer() throws Exception {
+        //获取导出导入工具类
+        SQLUtil exportUtil = SQLUtilFactory.getSqlUtil(this.getPipelineConfiguration().getExceptionDbType(), this.getExportConnectionFactory());
+        SQLUtil importUtil = SQLUtilFactory.getSqlUtil(this.getPipelineConfiguration().getImportDbType(), this.getImportConnectionFactory());
 
+        if (exportUtil == null || importUtil == null) {
+            throw new Exception("no found sql until");
+        }
+
+        //读取表里面的记录条数
+        String countTotal = SQLTools.getCountSql(this.getPipelineConfiguration().getExceptionSQL());
+
+
+        ResultSet rs = exportUtil.getData(countTotal);
+
+        if (rs != null) {
+            int total = 0;
+            while (rs.next()) {
+                total = rs.getInt("total");
+            }
+            rs.close();
+
+            if (total > 0) {
+                //数据存在开始组织导数据
+
+
+            }
+        } else {
+            throw new Exception("no execute count sql");
+        }
     }
 }

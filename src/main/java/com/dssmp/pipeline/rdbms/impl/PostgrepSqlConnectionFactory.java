@@ -53,4 +53,27 @@ public class PostgrepSqlConnectionFactory extends ConnectionFactroy {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 加载配置
+     *
+     * @return
+     */
+    protected  Properties loadProperty() {
+        Properties properties = new Properties();
+        properties.put("driverClassName","org.postgresql.Driver");
+        properties.put("url", this.url);
+        properties.put("username", this.username);
+        properties.put("password", this.password);
+        properties.put("maxActive", 20);
+        properties.put("initialSize", 10);
+        properties.put("maxWait", 12000);
+        properties.put("minIdle", 5);
+        properties.put("timeBetweenEvictionRunsMillis", 6000);
+        properties.put("validationQuery", "SELECT now();");
+        properties.put("testWhileIdle", true);
+        properties.put("testOnBorrow", false);
+        properties.put("testOnReturn", false);
+        return properties;
+    }
 }

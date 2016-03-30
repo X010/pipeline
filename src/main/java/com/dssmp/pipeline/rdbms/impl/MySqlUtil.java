@@ -2,8 +2,12 @@ package com.dssmp.pipeline.rdbms.impl;
 
 import com.dssmp.pipeline.rdbms.ConnectionFactroy;
 import com.dssmp.pipeline.rdbms.SQLUtil;
+import com.google.common.base.Preconditions;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -32,11 +36,33 @@ public class MySqlUtil extends SQLUtil {
 
     @Override
     public ResultSet getData(String sql) {
+        try {
+            Connection connection = this.connectionFactroy.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            return rs;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public void insertData(List<String> sqls) {
-
+        Preconditions.checkNotNull(sqls);
+        try {
+            Connection connection = this.connectionFactroy.getConnection();
+            final Statement statement = connection.createStatement();
+            sqls.stream().forEach(sql -> {
+                try {
+                    statement.execute(sql);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

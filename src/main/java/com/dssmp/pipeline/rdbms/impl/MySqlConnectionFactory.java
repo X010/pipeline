@@ -55,5 +55,27 @@ public class MySqlConnectionFactory extends ConnectionFactroy {
         }
     }
 
+    /**
+     * 加载配置
+     *
+     * @return
+     */
+    protected Properties loadProperty() {
+        Properties properties = new Properties();
+        properties.put("driverClassName", "com.mysql.jdbc.Driver");
+        properties.put("url", this.url);
+        properties.put("username", this.username);
+        properties.put("password", this.password);
+        properties.put("maxActive", 20);
+        properties.put("initialSize", 10);
+        properties.put("maxWait", 12000);
+        properties.put("minIdle", 5);
+        properties.put("timeBetweenEvictionRunsMillis", 6000);
+        properties.put("validationQuery", "SELECT now();");
+        properties.put("testWhileIdle", true);
+        properties.put("testOnBorrow", false);
+        properties.put("testOnReturn", false);
+        return properties;
+    }
 
 }

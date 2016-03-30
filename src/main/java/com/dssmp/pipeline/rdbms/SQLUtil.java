@@ -22,7 +22,7 @@ import java.util.List;
  */
 public abstract class SQLUtil {
 
-    private ConnectionFactroy connectionFactroy;
+    protected ConnectionFactroy connectionFactroy;
 
     public SQLUtil(ConnectionFactroy connectionFactroy) {
         this.connectionFactroy = connectionFactroy;
